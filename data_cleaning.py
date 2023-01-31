@@ -69,4 +69,6 @@ df_madrid = df_madrid.drop("Wireless", axis=1)
 print(df_madrid.head())
 df_madrid.to_csv("airbnb_madrid_clean")
 
+important_amenities.remove("Wireless")
+
 
