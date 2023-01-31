@@ -30,7 +30,9 @@ df_madrid = df_with_city[df_with_city["City"].str.contains("Mad")]
 important_features = ["Host Is Superhost", "Host Identity Verified"]
 
 ##internet and wireless should be combined in one column, maybe washer and dryer as well
-important_amenities = ["Kitchen", "Internet", "Wireless", "Air conditioning", "Heating", "Washer", "Dryer", "Elevator"]
+important_amenities = ["Kitchen", "Internet", "Wireless", "Air conditioning", "Heating", "Washer", 
+"Dryer", "Elevator", "Pets allowed", 'Wheelchair accessible', 'Smoking allowed', "TV", "Pool", 
+'Pets live on this property', 'Free parking on premises',  'Lock on bedroom door', '24-hour check-in', 'Breakfast']
 
 ##cancelation policy should be numeric
 cancelation_policy = {"strict": 0, "moderate": 1, "flexible": 2}
@@ -51,3 +53,13 @@ for feature in important_features:
         df_madrid_2[feature].iat[i] = booleans[i]
 
 print(df_madrid_2.head())
+
+amenities = set()
+list_amenities = list(df_madrid_2["Amenities"])
+for item in list_amenities:
+    if type(item) == str:
+        new_list = item.split(",")
+        for amenity in new_list:
+            amenities.add(amenity)
+
+print(amenities)
