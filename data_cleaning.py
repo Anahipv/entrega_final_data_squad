@@ -1,4 +1,5 @@
 import pandas as pd
+from functions import convert_column, remove_column
 
 df = pd.read_csv("airbnb-listings.csv", sep=";")
 rows, columns = df.shape
@@ -25,6 +26,14 @@ df_madrid = df_with_city[df_with_city["City"].str.contains("Mad")]
 # print(df_madrid.head())
 # print(df_madrid.iloc[[1]])
 
+amenities = set()
+list_amenities = list(df_madrid["Amenities"])
+for item in list_amenities:
+    if type(item) == str:
+        new_list = item.split(",")
+        for amenity in new_list:
+            amenities.add(amenity)
+
 ##remove shared rooms
 
 important_features = ["Host Is Superhost", "Host Identity Verified"]
@@ -40,26 +49,18 @@ cancelation_policy = {"strict": 0, "moderate": 1, "flexible": 2}
 ##maybe room type and property type should be numerical as well
 
 
-##adding columns for important features
+##resetting indexes
+df_madrid = df_madrid.reset_index()
 
-df_madrid_2 = df_madrid
-df_madrid_2 = df_madrid_2.reset_index()
 
-## CONVERTIR A FUNCION ASI SE USA PARA AMENITIES Y FEATURES
-for feature in important_features:
-    df_madrid_2[feature] = False
-    booleans = list(df_madrid_2["Features"].str.contains(feature))
-    for i in range(len(df_madrid)):
-        df_madrid_2[feature].iat[i] = booleans[i]
+##adding columns for important features and amenities
+df_madrid = convert_column(important_features, "Features", df_madrid)
 
-print(df_madrid_2.head())
+df_madrid = convert_column(important_amenities, "Amenities", df_madrid)
 
-amenities = set()
-list_amenities = list(df_madrid_2["Amenities"])
-for item in list_amenities:
-    if type(item) == str:
-        new_list = item.split(",")
-        for amenity in new_list:
-            amenities.add(amenity)
+##removing the original columns for features and amenities
+df_madrid = remove_column(["Features", "Amenities"], df_madrid)
 
-print(amenities)
+print(df_madrid)
+
+
