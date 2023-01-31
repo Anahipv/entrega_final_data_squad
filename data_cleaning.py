@@ -61,6 +61,12 @@ df_madrid = convert_column(important_amenities, "Amenities", df_madrid)
 ##removing the original columns for features and amenities
 df_madrid = remove_column(["Features", "Amenities"], df_madrid)
 
+for i in range(len(df_madrid)):
+    df_madrid["Internet"].iat[i] = df_madrid["Internet"].iat[i] and df_madrid["Wireless"].iat[i]
+df_madrid = df_madrid.drop("Wireless", axis=1)
+
+
+print(df_madrid.head())
 df_madrid.to_csv("airbnb_madrid_clean")
 
 
