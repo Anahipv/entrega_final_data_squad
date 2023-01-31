@@ -50,7 +50,7 @@ cancelation_policy = {"strict": 0, "moderate": 1, "flexible": 2}
 
 
 ##resetting indexes
-df_madrid = df_madrid.reset_index()
+df_madrid.reset_index(drop=True, inplace=True)
 
 
 ##adding columns for important features and amenities
@@ -58,17 +58,17 @@ df_madrid = convert_column(important_features, "Features", df_madrid)
 
 df_madrid = convert_column(important_amenities, "Amenities", df_madrid)
 
-##removing the original columns for features and amenities
-df_madrid = remove_column(["Features", "Amenities"], df_madrid)
-
+##join columns "Internet" and "Wireless" under the internet column
 for i in range(len(df_madrid)):
     df_madrid["Internet"].iat[i] = df_madrid["Internet"].iat[i] and df_madrid["Wireless"].iat[i]
-df_madrid = df_madrid.drop("Wireless", axis=1)
 
 
-print(df_madrid.head())
-df_madrid.to_csv("airbnb_madrid_clean")
+##removing the original columns for Features, Amenities and Wireless
+df_madrid = remove_column(["Features", "Amenities", "Wireless"], df_madrid)
 
 important_amenities.remove("Wireless")
 
+
+##convert the dataset to csv
+df_madrid.to_csv("airbnb_madrid_clean.csv")
 
