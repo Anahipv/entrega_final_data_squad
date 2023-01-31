@@ -21,10 +21,8 @@ df_less_columns = df.filter(columns_kept, axis=1)
 df_with_city = df_less_columns[df_less_columns.City.notnull()]
 
 #remove airbnbs not in Madrid
-df_madrid = df_with_city[df_with_city["City"].str.contains("Mad")]
+df_madrid = df_with_city[df_with_city["City"].str.contains("Mad", case=False)]
 
-# print(df_madrid.head())
-# print(df_madrid.iloc[[1]])
 
 amenities = set()
 list_amenities = list(df_madrid["Amenities"])
@@ -68,6 +66,12 @@ df_madrid = remove_column(["Features", "Amenities", "Wireless"], df_madrid)
 
 important_amenities.remove("Wireless")
 
+#cleaning column "Zipcode" 
+
+print(df_madrid[['ID', "Neighbourhood Cleansed", "Neighbourhood Group Cleansed", "City", "State", "Zipcode"]]
+        [(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-')])
+
+df_madrid.loc[(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-'), 'Zipcode'] = ''
 
 ##convert the dataset to csv
 df_madrid.to_csv("airbnb_madrid_clean.csv")
