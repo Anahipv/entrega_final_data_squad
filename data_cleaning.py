@@ -61,6 +61,6 @@ df_madrid = convert_column(important_amenities, "Amenities", df_madrid)
 ##removing the original columns for features and amenities
 df_madrid = remove_column(["Features", "Amenities"], df_madrid)
 
-print(df_madrid)
+df_madrid.to_csv("airbnb_madrid_clean")
 
 
