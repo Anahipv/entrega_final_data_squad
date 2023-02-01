@@ -51,6 +51,7 @@ cancelation_policy = {"strict": 0, "moderate": 1, "flexible": 2}
 df_madrid.reset_index(drop=True, inplace=True)
 
 
+
 ##adding columns for important features and amenities
 df_madrid = convert_column(important_features, "Features", df_madrid)
 

@@ -1,0 +1,122 @@
+```{r}
+df_madrid<-read.csv("data/airbnb_madrid_clean.csv")
+
+head(df_madrid)
+
+```
+
+```{r}
+colnames(df_madrid)
+
+```
+```{r}
+
+df_madrid_reduce <- df_madrid[c("Neighbourhood.Cleansed", "Property.Type", "Room.Type",  "Accommodates", "Bathrooms",  
+             "Bedrooms", "Beds", "Bed.Type", "Price", "Host.Is.Superhost","Host.Identity.Verified")]
+head(df_madrid_reduce)
+
+```
+```{r}
+
+summary(df_madrid_reduce)
+
+```
+
+```{r}
+
+df_madrid_reduce$Neighbourhood.Cleansed <- factor(df_madrid_reduce$Neighbourhood.Cleansed)
+df_madrid_reduce$Property.Type <- factor(df_madrid_reduce$Property.Type)
+df_madrid_reduce$Room.Type <- factor(df_madrid_reduce$Room.Type)
+df_madrid_reduce$Bed.Type <- factor(df_madrid_reduce$Bed.Type)
+df_madrid_reduce$Host.Is.Superhost <- factor(df_madrid_reduce$Host.Is.Superhost)
+df_madrid_reduce$Host.Identity.Verified <- factor(df_madrid_reduce$Host.Identity.Verified)
+
+summary(df_madrid_reduce)
+
+```
+
+
+```{r}
+
+library(GGally)
+ggpairs(df_madrid_reduce, columns=c("Accommodates","Bathrooms", "Bedrooms", "Price", "Host.Is.Superhost"),
+lower = list(continuous = wrap("points", alpha = 0.3,size=0.3,color='blue'))
+) 
+
+```
+
+
+```{r}
+
+ggplot(df_madrid_reduce, aes(x=Accommodates, y=Price))+geom_point()
+ggplot(df_madrid_reduce, aes(x=Accommodates, y=Price))+geom_boxplot()
+
+```
+
+```{r}
+ggplot(df_madrid_reduce, aes(x=Accommodates))+geom_boxplot()
+
+```
+
+```{r}
+#limpio accommodates, quito las filas con mas de 7
+
+df_madrid_reduce <- df_madrid_reduce[df_madrid_reduce$Accommodates<= 7,]
+
+ggplot(df_madrid_reduce, aes(x=Accommodates))+geom_boxplot()
+
+```
+
+```{r}
+
+ggpairs(df_madrid_reduce, columns=c("Accommodates","Bathrooms", "Bedrooms", "Price", "Host.Is.Superhost"),
+lower = list(continuous = wrap("points", alpha = 0.3,size=0.3,color='blue'))
+) 
+
+```
+
+```{r}
+ggplot(df_madrid_reduce, aes(x=Price, y=Bathrooms))+geom_point()
+ggplot(df_madrid_reduce, aes(x=Price, y=Bathrooms))+geom_boxplot()
+
+```
+
+```{r}
+#limpio bathrooms, quito las filas con mas de 3
+
+df_madrid_reduce <- df_madrid_reduce[df_madrid_reduce$Bathrooms<= 3,]
+
+ggplot(df_madrid_reduce, aes(x=Bathrooms))+geom_boxplot()
+
+```
+
+```{r}
+
+ggpairs(df_madrid_reduce, columns=c("Accommodates","Bathrooms", "Bedrooms", "Price", "Host.Is.Superhost"),
+lower = list(continuous = wrap("points", alpha = 0.3,size=0.3,color='blue'))
+) 
+
+```
+
+```{r}
+ggplot(df_madrid_reduce, aes(x=Bedrooms, y=Price))+geom_point()
+ggplot(df_madrid_reduce, aes(x=Price, y=Bedrooms))+geom_boxplot()
+
+```
+
+```{r}
+#limpio bedrooms, quito las filas con mas de 4
+
+df_madrid_reduce <- df_madrid_reduce[df_madrid_reduce$Bedrooms<= 4,]
+
+ggplot(df_madrid_reduce, aes(x=Bedrooms))+geom_boxplot()
+
+```
+
+```{r}
+
+ggpairs(df_madrid_reduce, columns=c("Accommodates","Bathrooms", "Bedrooms", "Price", "Host.Is.Superhost"),
+lower = list(continuous = wrap("points", alpha = 0.3,size=0.3,color='blue'))
+) 
+
+```

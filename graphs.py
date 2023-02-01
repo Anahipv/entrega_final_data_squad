@@ -1,19 +1,24 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from data_cleaning import df_madrid, important_amenities
+# from data_cleaning import important_amenities  
+##CARO: si importamos algo de data_cleaning no scorre todo el archivo, si no es necesario lo evitaria
 import pandas as pd
+import numpy as np
 
-list_count = []
-for amenity in important_amenities:
-    count = 0
-    for i in range(len(df_madrid)):
-        if df_madrid[amenity].iat[i]:
-            count += 1
-    list_count.append(count)
+###aca por eso deje mejor leer el csv que importar el data frame
+df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
+
+# list_count = []
+# for amenity in important_amenities:
+#     count = 0
+#     for i in range(len(df_madrid)):
+#         if df_madrid[amenity].iat[i]:
+#             count += 1
+#     list_count.append(count)
 
 
-rows = df_madrid.shape[0]
-list_percentage = list(map(lambda x: int(100*x/rows), list_count))
+# rows = df_madrid.shape[0]
+# list_percentage = list(map(lambda x: int(100*x/rows), list_count))
 
 #bp = sns.barplot(x=important_amenities, y=list_percentage)
 #bp.set_title("Percentage of properties with amenities", fontsize=30)
@@ -46,15 +51,44 @@ list_percentage = list(map(lambda x: int(100*x/rows), list_count))
 #bx.set_yticks(range(0, 250, 10))
 #plt.show()
 
-room_types = df_madrid["Room Type"].unique()
-list_df_room_types = []
-for room_type in room_types:
-    df_filtered = df_madrid[df_madrid["Room Type"] == room_type]
-    list_df_room_types.append(df_filtered)
+# room_types = df_madrid["Room Type"].unique()
+# list_df_room_types = []
+# for room_type in room_types:
+#     df_filtered = df_madrid[df_madrid["Room Type"] == room_type]
+#     list_df_room_types.append(df_filtered)
 
-for index, df in enumerate(list_df_room_types):
-    rt = sns.barplot(x="Neighbourhood Group Cleansed", y="Price", data=df)
-    rt.set_title(room_types[index], fontsize=30)
-    plt.xticks(rotation=90, fontsize=10)
-    plt.show()
+# for index, df in enumerate(list_df_room_types):
+#     rt = sns.barplot(x="Neighbourhood Group Cleansed", y="Price", data=df)
+#     rt.set_title(room_types[index], fontsize=30)
+#     plt.xticks(rotation=90, fontsize=10)
+#     plt.show()
+    
+
+# bx = sns.boxplot(x='Accommodates', y="Price", data=df_madrid, fliersize=0.5)
+# bx.grid(axis="y", color="gray", linestyle="dashed")
+# plt.ylim(ymax=250, ymin=0)
+# bx.set_yticks(range(0, 250, 10))
+# plt.show()
+
+
+# sct = sns.scatterplot(data=df_madrid, x='Accommodates', y='Price', alpha= 0.8)
+# plt.xticks(rotation=90, fontsize=10)
+# plt.ylim(ymax=250, ymin=0)
+# plt.xlim(xmax=10, xmin=1)
+# sct.set_yticks(range(0, 250, 10))
+# plt.show()
+
+names_columns = list(df_madrid)
+
+print(names_columns)
+
+important_columns = ['Price', 'Neighbourhood Cleansed', 'Neighbourhood Group Cleansed','Property Type', 'Room Type', 'Accommodates', 
+                        'Bathrooms', 'Bedrooms', 'Host Is Superhost', 'Host Identity Verified', 'Internet', 'Air conditioning']
+
+df_madrid_reduce = df_madrid[important_columns]
+
+print(df_madrid_reduce.corr())
+
+
+
 
