@@ -46,5 +46,6 @@ plt.ylim(ymax=250, ymin=0)
 bx.set_yticks(range(0, 250, 10))
 #plt.show()
 
-
+neighborhood_groups = df_madrid["Neighbourhood Group Cleansed"]
+print(neighborhood_groups)
 
