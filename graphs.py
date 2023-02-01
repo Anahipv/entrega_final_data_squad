@@ -11,7 +11,14 @@ for amenity in important_amenities:
             count += 1
     list_count.append(count)
 
-#sns.barplot(x=important_amenities, y=list_count)
+
+rows = df_madrid.shape[0]
+list_percentage = list(map(lambda x: int(100*x/rows), list_count))
+
+bp = sns.barplot(x=important_amenities, y=list_percentage)
+bp.set_title("Percentage of properties with amenities", fontsize=30)
+for i in range(len(important_amenities)):
+    plt.text(i,list_percentage[i]/2, str(list_percentage[i])+"%", color="white", fontweight="bold", horizontalalignment="center")
 #plt.xticks(rotation=90, fontsize=10)
 #plt.show()
 
@@ -23,7 +30,6 @@ for index in range(len(df_madrid)):
     else:
         dict_freq[type_prop] = 1
 
-print(dict_freq)
 #sns.scatterplot(x="Neighbourhood Group Cleansed", y="Price", data=df_madrid, hue="Room Type")
 #plt.xticks(rotation=90, fontsize=10)
 #plt.show()
@@ -38,4 +44,7 @@ bx = sns.boxplot(x=["Air conditioning", "Pool", "Breakfast"], y="Price", data=df
 bx.grid(axis="y", color="gray", linestyle="dashed")
 plt.ylim(ymax=250, ymin=0)
 bx.set_yticks(range(0, 250, 10))
-plt.show()
+#plt.show()
+
+
+

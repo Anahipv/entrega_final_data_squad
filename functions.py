@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def convert_column(list_column, name_column, df):
     for item in list_column:
         df[item] = False
@@ -9,3 +11,4 @@ def convert_column(list_column, name_column, df):
 def remove_column(list_columns, df):
     df = df.drop(columns = list_columns)
     return df
+

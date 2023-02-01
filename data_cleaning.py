@@ -11,7 +11,7 @@ column_names = list(df)
 # print(column_names)
 
 columns_kept = ["ID", "Host ID", "Host Name", "Host Response Rate", "Street", 
-"Neighbourhood Cleansed", "Neighbourhood Group Cleansed", "City", "State", "Zipcode", "Smart Location",
+"Neighbourhood Cleansed", "Neighbourhood Group Cleansed", "City", "State", "Zipcode",
 "Country", "Latitude", "Longitude", "Property Type", "Room Type", "Accommodates", "Bathrooms", "Bedrooms", 
 "Beds", "Bed Type", "Amenities", "Price", "Security Deposit", "Cleaning Fee", "Guests Included",
 "Number of Reviews", "Review Scores Rating", "Cancellation Policy", "Features"]
