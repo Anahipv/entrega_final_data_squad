@@ -76,5 +76,6 @@ print(df_madrid[['ID', "Neighbourhood Cleansed", "Neighbourhood Group Cleansed",
 df_madrid.loc[(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-'), 'Zipcode'] = ''
 
 ##convert the dataset to csv
-df_madrid.to_csv("airbnb_madrid_clean.csv")
+#df_madrid.to_csv("airbnb_madrid_clean.csv")
 
+corr = df_madrid.corr()["Price"]
