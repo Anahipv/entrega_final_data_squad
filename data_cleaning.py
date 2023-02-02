@@ -51,6 +51,8 @@ for index in range(len(df_madrid)):
 ##resetting indexes
 df_madrid.reset_index(drop=True, inplace=True)
 
+
+
 ##adding columns for important features and amenities
 df_madrid = convert_column(important_features, "Features", df_madrid)
 

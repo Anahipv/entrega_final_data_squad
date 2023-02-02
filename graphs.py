@@ -1,19 +1,24 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from data_cleaning import df_madrid, important_amenities
+# from data_cleaning import important_amenities  
+##CARO: si importamos algo de data_cleaning no scorre todo el archivo, si no es necesario lo evitaria
 import pandas as pd
+import numpy as np
 
-list_count = []
-for amenity in important_amenities:
-    count = 0
-    for i in range(len(df_madrid)):
-        if df_madrid[amenity].iat[i]:
-            count += 1
-    list_count.append(count)
+###aca por eso deje mejor leer el csv que importar el data frame
+df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
+
+# list_count = []
+# for amenity in important_amenities:
+#     count = 0
+#     for i in range(len(df_madrid)):
+#         if df_madrid[amenity].iat[i]:
+#             count += 1
+#     list_count.append(count)
 
 
-rows = df_madrid.shape[0]
-list_percentage = list(map(lambda x: int(100*x/rows), list_count))
+# rows = df_madrid.shape[0]
+# list_percentage = list(map(lambda x: int(100*x/rows), list_count))
 
 bp = sns.barplot(x=important_amenities, y=list_percentage)
 bp.set_title("Percentage of properties with amenities", fontsize=30)
@@ -52,11 +57,9 @@ for room_type in room_types:
     df_filtered = df_madrid[df_madrid["Room Type"] == room_type]
     list_df_room_types.append(df_filtered)
 
-width = 0.25
-colors = ["blue", "green", "orange"]
 for index, df in enumerate(list_df_room_types):
-    ##ci=None removes the error bar
-    sns.barplot(x="Neighbourhood Group Cleansed", y="Price", data=df, ci=None, color=colors[index])
+    rt = sns.barplot(x="Neighbourhood Group Cleansed", y="Price", data=df)
+    rt.set_title(room_types[index], fontsize=30)
     plt.xticks(rotation=90, fontsize=10)
     plt.show()
 
