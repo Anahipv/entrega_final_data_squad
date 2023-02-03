@@ -1,5 +1,5 @@
 import pandas as pd
-from functions import convert_column, remove_column
+from functions import convert_column, remove_columns
 
 df = pd.read_csv("airbnb-listings.csv", sep=";")
 rows, columns = df.shape
@@ -61,7 +61,7 @@ for i in range(len(df_madrid)):
 
 
 ##removing the original columns for Features, Amenities and Wireless
-df_madrid = remove_column(["Features", "Amenities", "Wireless"], df_madrid)
+df_madrid = remove_columns(["Features", "Amenities", "Wireless"], df_madrid)
 
 important_amenities.remove("Wireless")
 

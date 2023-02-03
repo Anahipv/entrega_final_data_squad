@@ -8,7 +8,7 @@ def convert_column(list_column, name_column, df):
             df[item].iat[i] = booleans[i]
     return df
 
-def remove_column(list_columns, df):
+def remove_columns(list_columns, df):
     df = df.drop(columns = list_columns)
     return df
 
