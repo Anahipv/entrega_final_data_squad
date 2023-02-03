@@ -36,10 +36,9 @@ for item in list_amenities:
 
 important_features = ["Host Is Superhost", "Host Identity Verified"]
 
-##internet and wireless should be combined in one column, maybe washer and dryer as well
+##internet and wireless should be combined in one column
 important_amenities = ["Kitchen", "Internet", "Wireless", "Air conditioning", "Heating", "Washer", 
-"Dryer", "Elevator", "Pets allowed", 'Wheelchair accessible', 'Smoking allowed', "TV", "Pool", 
-'Pets live on this property', 'Free parking on premises',  'Lock on bedroom door', '24-hour check-in', 'Breakfast']
+"Dryer", "Elevator", 'Wheelchair accessible', "TV", "Pool", '24-hour check-in']
 
 ##property types
 relevant_types = ["Apartment", "House"]
@@ -50,8 +49,6 @@ for index in range(len(df_madrid)):
 
 ##resetting indexes
 df_madrid.reset_index(drop=True, inplace=True)
-
-
 
 ##adding columns for important features and amenities
 df_madrid = convert_column(important_features, "Features", df_madrid)
@@ -75,7 +72,35 @@ print(df_madrid[['ID', "Neighbourhood Cleansed", "Neighbourhood Group Cleansed",
 
 df_madrid.loc[(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-'), 'Zipcode'] = ''
 
-##convert the dataset to csv
-#df_madrid.to_csv("airbnb_madrid_clean.csv")
+corr = df_madrid.corr()
+dict_weights = {}
+for amenity in important_amenities:
+    weight = corr["Price"][amenity]
+    dict_weights[amenity] = weight
 
-corr = df_madrid.corr()["Price"]
+scores = []
+for index in range(len(df_madrid)):
+    score = 0
+    for amenity in important_amenities:
+        if df_madrid[amenity].iat[index]:
+            score += dict_weights[amenity]
+    scores.append(score)
+
+df_madrid["Amenities Score"] = scores
+
+print(df_madrid["Amenities Score"])
+
+q3 = df_madrid["Amenities Score"].quantile(0.33)
+q6 = df_madrid["Amenities Score"].quantile(0.67)
+
+ratings = []
+for index in range(len(df_madrid)):
+    if df_madrid["Amenities Score"].iat[index] < q3:
+        ratings.append("C")
+    elif df_madrid["Amenities Score"].iat[index] < q6:
+        ratings.append("B")
+    else:
+        ratings.append("A")
+df_madrid["Amenities Rating"] = ratings
+##convert the dataset to csv
+df_madrid.to_csv("airbnb_madrid_clean.csv")
