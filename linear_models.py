@@ -4,6 +4,7 @@ from data_cleaning import important_amenities
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
+import numpy as np
 
 df_madrid = pd.read_csv("airbnb_madrid_clean.csv")
 
@@ -18,7 +19,27 @@ df_madrid = remove_columns(important_amenities, df_madrid)
 df_madrid = df_madrid.dropna(subset=["Beds", "Bathrooms", "Bedrooms"])
 
 ##we need to deal with nan values in security deposit and cleaning fee
-##suggestion: median considering the number of rooms
+##we will use the median considering the number of rooms
+dict_sd = {}
+dict_cf = {}
+number_of_rooms = df_madrid["Bedrooms"].unique()
+for number in number_of_rooms:
+    df_filtered = df_madrid[df_madrid["Bedrooms"] == number]
+    median_sd = df_filtered["Security Deposit"].median()
+    dict_sd[number] = median_sd
+    median_cf = df_filtered["Cleaning Fee"].median()
+    dict_cf[number] = median_cf
+
+
+for index in range(len(df_madrid)):
+    if np.isnan(df_madrid["Security Deposit"].iat[index]):
+        number_rooms = df_madrid["Bedrooms"].iat[index]
+        median_sd = dict_sd[number_rooms]
+        df_madrid["Security Deposit"].iat[index] = median_sd
+    if np.isnan(df_madrid["Cleaning Fee"].iat[index]):
+        number_rooms = df_madrid["Bedrooms"].iat[index]
+        median_cf = dict_cf[number_rooms]
+        df_madrid["Cleaning Fee"].iat[index] = median_cf
 
 
 ##then we make dummie variables for the categorical columns
