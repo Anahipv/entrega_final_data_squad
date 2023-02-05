@@ -69,12 +69,6 @@ plt.ylim(ymax=600, ymin=0)
 bx.set_yticks(range(0, 600, 10))
 plt.show()
 
-#bx = sns.boxplot(x=["Air conditioning", "Pool", "Breakfast"], y="Price", data=df_madrid, fliersize=0.5)
-#bx.grid(axis="y", color="gray", linestyle="dashed")
-#plt.ylim(ymax=250, ymin=0)
-#bx.set_yticks(range(0, 250, 10))
-#plt.show()
-
 #room_types = df_madrid["Room Type"].unique()
 #list_df_room_types = []
 #for room_type in room_types:

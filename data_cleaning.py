@@ -4,11 +4,11 @@ from functions import convert_column, remove_columns
 df = pd.read_csv("airbnb-listings.csv", sep=";")
 rows, columns = df.shape
 
-# print(f"We have {rows} rows and {columns} columns")
+print(f"We have {rows} rows and {columns} columns")
 
 column_names = list(df)
 
-# print(column_names)
+print(column_names)
 
 columns_kept = ["ID", "Host ID", "Host Name", "Host Response Rate", "Street", 
 "Neighbourhood Cleansed", "Neighbourhood Group Cleansed", "City", "State", "Zipcode",
