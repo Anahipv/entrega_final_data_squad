@@ -1,12 +1,14 @@
 import pandas as pd
 from functions import remove_columns
-from data_cleaning import important_amenities
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
 df_madrid = pd.read_csv("airbnb_madrid_clean.csv")
+
+important_amenities = ["Kitchen", "Internet", "Air conditioning", "Heating", "Washer", 
+"Dryer", "Elevator", 'Wheelchair accessible', "TV", "Pool", '24-hour check-in']
 
 ##first we remove the columns that won't be used in the linear model
 df_madrid = remove_columns(["Host ID", "Host Name", "Street", "Neighbourhood Cleansed", "City", "State", "Bed Type",
