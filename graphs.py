@@ -39,17 +39,35 @@ df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
 #plt.xticks(rotation=90, fontsize=10)
 #plt.show()
 
-#bx = sns.boxplot(x="Room Type", y="Price", data=df_madrid, fliersize=0.5)
-#bx.grid(axis="y", color="gray", linestyle="dashed")
-#plt.ylim(ymax=250, ymin=0)
-#bx.set_yticks(range(0, 250, 10))
-#plt.show()
+# bx = sns.boxplot(x="Room Type", y="Price", data=df_madrid, fliersize=0.5)
+# bx.grid(axis="y", color="gray", linestyle="dashed")
+# plt.ylim(ymax=250, ymin=0)
+# bx.set_yticks(range(0, 250, 10))
+# plt.show()
 
-#bx = sns.boxplot(x=["Air conditioning", "Pool", "Breakfast"], y="Price", data=df_madrid, fliersize=0.5)
-#bx.grid(axis="y", color="gray", linestyle="dashed")
-#plt.ylim(ymax=250, ymin=0)
-#bx.set_yticks(range(0, 250, 10))
-#plt.show()
+# bx = sns.boxplot(x="Bedrooms", y="Price", data=df_madrid, fliersize=0.5)
+# bx.grid(axis="y", color="gray", linestyle="dashed")
+# plt.ylim(ymax=600, ymin=0)
+# bx.set_yticks(range(0, 600, 10))
+# plt.show()
+
+# bx = sns.boxplot(x="Bathrooms", y="Price", data=df_madrid, fliersize=0.5)
+# bx.grid(axis="y", color="gray", linestyle="dashed")
+# plt.ylim(ymax=600, ymin=0)
+# bx.set_yticks(range(0, 600, 10))
+# plt.show()
+
+# bx = sns.boxplot(x="Accommodates", y="Price", data=df_madrid, fliersize=0.5)
+# bx.grid(axis="y", color="gray", linestyle="dashed")
+# plt.ylim(ymax=600, ymin=0)
+# bx.set_yticks(range(0, 600, 10))
+# plt.show()
+
+bx = sns.boxplot(x="Amenities Rating", y="Price", data=df_madrid, fliersize=0.5)
+bx.grid(axis="y", color="gray", linestyle="dashed")
+plt.ylim(ymax=600, ymin=0)
+bx.set_yticks(range(0, 600, 10))
+plt.show()
 
 #room_types = df_madrid["Room Type"].unique()
 #list_df_room_types = []
@@ -65,3 +83,18 @@ df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
 
 #sns.distplot(df_madrid["Price"])
 #plt.show()
+
+
+##Gracifos con Y en Price y X variables
+
+# sns.scatterplot(x='Bedrooms', y="Price", data=df_madrid)
+# plt.xticks(rotation=90, fontsize=10)
+# plt.show()
+
+# sns.scatterplot(x='Bathrooms', y="Price", data=df_madrid)
+# plt.xticks(rotation=90, fontsize=10)
+# plt.show()
+
+# sns.scatterplot(x='Amenities Score', y="Price", data=df_madrid)
+# plt.xticks(rotation=90, fontsize=10)
+# plt.show()
