@@ -79,17 +79,13 @@ bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
 accommodates_price = [(1,60), (2,100), (3,120), (4,140), (5,180), (6,210), (7,270), (8,300)]
 amenities_rating_price = [('C',150), ('B',200), ('A',300)]
 
-for i in range(len(bedrooms_price)):
-    train = train[(train['Bedrooms'] != bedrooms_price[i][0]) | ((train["Bedrooms"] == bedrooms_price[i][0]) & (train["Price"] <= bedrooms_price[i][1] ))]
+dict_columns = {"Bedrooms" : bedrooms_price, "Bathrooms": bathrooms_price, "Accommodates": accommodates_price, "Amenities Rating": amenities_rating_price}
 
-for i in range(len(bathrooms_price)):
-    train = train[(train['Bathrooms'] != bathrooms_price[i][0]) | ((train["Bathrooms"] == bathrooms_price[i][0]) & (train["Price"] <= bathrooms_price[i][1] ))]
+for column_name in dict_columns.keys():
+    list_prices = dict_columns[column_name]
+    for i in range(len(list_prices)):
+        train = train[(train[column_name] != list_prices[i][0]) | ((train[column_name] == list_prices[i][0]) & (train["Price"] <= list_prices[i][1] ))]
 
-for i in range(len(accommodates_price)):
-    train = train[(train['Accommodates'] != accommodates_price[i][0]) | ((train["Accommodates"] == accommodates_price[i][0]) & (train["Price"] <= accommodates_price[i][1] ))]
-
-for i in range(len(amenities_rating_price)):
-    train = train[(train['Amenities Rating'] != amenities_rating_price[i][0]) | ((train["Amenities Rating"] == amenities_rating_price[i][0]) & (train["Price"] <= amenities_rating_price[i][1] ))]
 
 ##now that we've used the columns Amenities Rating to remove outliers, we will drop it
 ##we won't convert it using one hot encoding because Amenities Scores exists
@@ -114,6 +110,9 @@ y_train = train["Price"]
 X_train = train.drop("Price", axis=1)
 y_test = test["Price"]
 X_test = test.drop("Price", axis = 1)
+
+#now we deal with the nans in the test (if we have the time, make it into a pipeline)
+
 
 ##this should work after removing Nans
 lr = LinearRegression()
