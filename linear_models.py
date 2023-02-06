@@ -15,7 +15,7 @@ important_amenities = ["Kitchen", "Internet", "Air conditioning", "Heating", "Wa
 
 
 df_madrid = remove_columns(["Host ID", "Host Name", "Street", "Neighbourhood Cleansed", "City", "State", "Bed Type",
-"Zipcode", "Country", "Latitude", "Longitude", "ID", "Number of Reviews", "Host Identity Verified"], df_madrid)
+"Country", "Latitude", "Longitude", "ID", "Number of Reviews", "Host Identity Verified", "Neighbourhood Group Cleansed"], df_madrid)
 df_madrid = remove_columns(important_amenities, df_madrid)
 df_madrid.drop(df_madrid.columns[0], axis=1, inplace= True)
 
@@ -27,7 +27,7 @@ for index in range(len(df_madrid)):
 
         
 ##then we make dummie variables for the categorical columns
-cat_columns = ["Neighbourhood Group Cleansed", "Property Type", "Room Type", "Cancellation Policy",]
+cat_columns = ["Property Type", "Room Type", "Cancellation Policy", "Zipcode"]
 
 for col in cat_columns:
     one_hot = pd.get_dummies(df_madrid[col])
