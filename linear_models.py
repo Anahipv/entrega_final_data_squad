@@ -2,6 +2,7 @@ import pandas as pd
 from functions import remove_columns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
 
@@ -147,3 +148,12 @@ _preds_df.head()
 ##evaluating the model
 print('MSE: {}'.format(mean_squared_error(y_test, y_pred)))
 print("Mean Percentual Error: {}".format(mean_absolute_percentage_error(y_test, y_pred)))
+
+
+##random forest for comparison
+#rf = RandomForestRegressor()
+#rf.fit(X_train, y_train)
+
+#y_pred_rd = rf.predict(X_test)
+
+#print("Mean Percentual Error (RF): {}".format(mean_absolute_percentage_error(y_test, y_pred_rd)))
