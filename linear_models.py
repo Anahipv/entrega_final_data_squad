@@ -15,10 +15,10 @@ important_amenities = ["Kitchen", "Internet", "Air conditioning", "Heating", "Wa
 #df_madrid = df_madrid[df_madrid['Room Type'] != 'Shared room']
 
 df_madrid = remove_columns(["Host ID", "Host Name", "Street", "Neighbourhood Cleansed", "City", "State", "Bed Type",
-"Zipcode", "Country", "Latitude", "Longitude", "Host Is Superhost", "Host Identity Verified",
-"Review Scores Rating", "Host Response Rate", "ID", "Guests Included","Number of Reviews"], df_madrid)
+"Zipcode", "Country", "Latitude", "Longitude", "Host Identity Verified", "Host Is Superhost", "Host Response Rate", "ID", "Number of Reviews"], df_madrid)
 df_madrid = remove_columns(important_amenities, df_madrid)
 df_madrid.drop(df_madrid.columns[0], axis=1, inplace= True)
+
 
 ##then we make dummie variables for the categorical columns
 cat_columns = ["Neighbourhood Group Cleansed", "Property Type", "Room Type", "Cancellation Policy",]
@@ -37,7 +37,7 @@ train, test = train_test_split(df_madrid, test_size=0.2, random_state=40)
 
 ##now we will deal with missing values and outliers in the train set
 ##first we remove the rows with nan values in beds, bathroms, bedrooms and price
-train = train.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price"])
+train = train.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating"])
 
 #print('CORRELACION ORIGINAL')
 #print(train.corr()['Price'])
@@ -72,14 +72,17 @@ for index in range(len(train)):
 train = train[train['Bedrooms'] <= 5]
 train = train[(train['Bathrooms'] >= 1) & (train['Bathrooms'] <= 3)]
 train = train[train['Accommodates'] <= 8]
+train = train[train["Guests Included"] <= 6]
 
 ##We obtained these values in the lists from the file graphs.py, analyzing the data with a boxplot
 bedrooms_price = [(0,110), (1,125), (2,200), (3,280), (4,390), (5,500)]
 bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
 accommodates_price = [(1,60), (2,100), (3,120), (4,140), (5,180), (6,210), (7,270), (8,300)]
 amenities_rating_price = [('C',150), ('B',200), ('A',300)]
+guests_included_price = [(1, 125), (2, 135), (3, 150), (4,220), (5,230), (6,300)]
 
-dict_columns = {"Bedrooms" : bedrooms_price, "Bathrooms": bathrooms_price, "Accommodates": accommodates_price, "Amenities Rating": amenities_rating_price}
+dict_columns = {"Bedrooms" : bedrooms_price, "Bathrooms": bathrooms_price, "Accommodates": accommodates_price, 
+"Amenities Rating": amenities_rating_price, "Guests Included": guests_included_price}
 
 for column_name in dict_columns.keys():
     list_prices = dict_columns[column_name]
@@ -109,7 +112,7 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 
 #now we deal with the nans in the test (if we have the time, make it into a pipeline)
 ##first we remove the rows with nan values in beds, bathroms, bedrooms and price
-test = test.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price"])
+test = test.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating"])
 
 ##we need to deal with nan values in security deposit and cleaning fee
 ##we will use the median from train considering the number of rooms
