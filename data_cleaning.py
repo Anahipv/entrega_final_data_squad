@@ -1,5 +1,5 @@
 import pandas as pd
-from functions import convert_column, remove_columns
+from functions import create_and_populate_columns, remove_columns
 
 df = pd.read_csv("airbnb-listings.csv", sep=";")
 rows, columns = df.shape
@@ -15,8 +15,6 @@ columns_kept = ["ID", "Host ID", "Host Name", "Host Response Rate", "Street",
 "Country", "Latitude", "Longitude", "Property Type", "Room Type", "Accommodates", "Bathrooms", "Bedrooms", 
 "Beds", "Bed Type", "Amenities", "Price", "Security Deposit", "Cleaning Fee", "Guests Included",
 "Number of Reviews", "Review Scores Rating", "Cancellation Policy", "Features"]
-
-
 
 
 df_less_columns = df.filter(columns_kept, axis=1)
@@ -35,15 +33,12 @@ for item in list_amenities:
         for amenity in new_list:
             amenities.add(amenity)
 
-##remove shared rooms
 
 important_features = ["Host Is Superhost", "Host Identity Verified"]
-
-##internet and wireless should be combined in one column
 important_amenities = ["Kitchen", "Internet", "Wireless", "Air conditioning", "Heating", "Washer", 
 "Dryer", "Elevator", 'Wheelchair accessible', "TV", "Pool", '24-hour check-in']
 
-##property types
+##we group the data in property types like apartment, house or other
 relevant_types = ["Apartment", "House"]
 for index in range(len(df_madrid)):
     if df_madrid["Property Type"].iat[index] not in relevant_types:
@@ -54,9 +49,9 @@ for index in range(len(df_madrid)):
 df_madrid.reset_index(drop=True, inplace=True)
 
 ##adding columns for important features and amenities
-df_madrid = convert_column(important_features, "Features", df_madrid)
+df_madrid = create_and_populate_columns(important_features, "Features", df_madrid)
 
-df_madrid = convert_column(important_amenities, "Amenities", df_madrid)
+df_madrid = create_and_populate_columns(important_amenities, "Amenities", df_madrid)
 
 ##join columns "Internet" and "Wireless" under the internet column
 for i in range(len(df_madrid)):
@@ -105,5 +100,7 @@ for index in range(len(df_madrid)):
     else:
         ratings.append("A")
 df_madrid["Amenities Rating"] = ratings
+
+
 ##convert the dataset to csv
 df_madrid.to_csv("airbnb_madrid_clean.csv")

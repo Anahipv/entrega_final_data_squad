@@ -1,21 +1,24 @@
-## creo que podemos convertir las funciones con map pero aun no deduzco bien la logica
-# from data_cleaning import important_features, df_less_columns
-import pandas as pd
-
-def list_booleans(item, name_column, df):
-    this_column = df[name_column].items()
-    booleans = list(map(lambda x: item in x, this_column))
-    return booleans
-
-# print(list_booleans("TV", "Amenities", df_less_columns))
-
-
-def create_column(df, item):
-    dfcopy = df
-    dfcopy[item] = False
+def create_and_populate_columns(list_column, column_reference, df):
+    for item in list_column:
+        df[item] = None
+        booleans = list(df[column_reference].str.contains(item, case=False))
+        for i in range(len(df)):
+            df[item].iat[i] = booleans[i]
     return df
 
-def convert_column_map(list_column, name_column, df):
-   df.map(create_column(df, list_column))
+def create_columns(df, list_columns):
+    for item in list_columns:
+        df[item] = None
+    return df
 
-# print(convert_column_map(important_features, "Features", df_madrid))
+def column_contains(df, column_reference, item):
+    booleans = list(df[column_reference].str.contains(item, case=False))
+    return booleans
+
+def populate_columns(df, column, list_booleans):
+    for i in range(len(df)):
+        df[column].iat[i] = list_booleans[i]
+    return df
+
+# def create_and_populate_columns2(list_columns, column_reference, df):
+#     df = create_columns(df, list_columns)
