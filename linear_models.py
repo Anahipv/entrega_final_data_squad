@@ -13,14 +13,19 @@ important_amenities = ["Kitchen", "Internet", "Air conditioning", "Heating", "Wa
 
 ##first we remove the columns that won't be used in the linear model and the rows where Room Type is Shared room
 
-#df_madrid = df_madrid[df_madrid['Room Type'] != 'Shared room']
 
 df_madrid = remove_columns(["Host ID", "Host Name", "Street", "Neighbourhood Cleansed", "City", "State", "Bed Type",
-"Zipcode", "Country", "Latitude", "Longitude", "Host Identity Verified", "Host Is Superhost", "Host Response Rate", "ID", "Number of Reviews"], df_madrid)
+"Zipcode", "Country", "Latitude", "Longitude", "ID", "Number of Reviews", "Host Identity Verified"], df_madrid)
 df_madrid = remove_columns(important_amenities, df_madrid)
 df_madrid.drop(df_madrid.columns[0], axis=1, inplace= True)
 
+for index in range(len(df_madrid)):
+    if df_madrid["Host Is Superhost"].iat[index]:
+        df_madrid["Host Is Superhost"].iat[index] = 1
+    else:
+        df_madrid["Host Is Superhost"].iat[index] = 0
 
+        
 ##then we make dummie variables for the categorical columns
 cat_columns = ["Neighbourhood Group Cleansed", "Property Type", "Room Type", "Cancellation Policy",]
 
@@ -38,7 +43,7 @@ train, test = train_test_split(df_madrid, test_size=0.2, random_state=40)
 
 ##now we will deal with missing values and outliers in the train set
 ##first we remove the rows with nan values in beds, bathroms, bedrooms and price
-train = train.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating"])
+train = train.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating", "Host Response Rate"])
 
 #print('CORRELACION ORIGINAL')
 #print(train.corr()['Price'])
@@ -113,7 +118,7 @@ missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 
 #now we deal with the nans in the test (if we have the time, make it into a pipeline)
 ##first we remove the rows with nan values in beds, bathroms, bedrooms and price
-test = test.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating"])
+test = test.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price", "Review Scores Rating", "Host Response Rate"])
 
 ##we need to deal with nan values in security deposit and cleaning fee
 ##we will use the median from train considering the number of rooms
@@ -151,9 +156,9 @@ print("Mean Percentual Error: {}".format(mean_absolute_percentage_error(y_test, 
 
 
 ##random forest for comparison
-#rf = RandomForestRegressor()
-#rf.fit(X_train, y_train)
+rf = RandomForestRegressor()
+rf.fit(X_train, y_train)
 
-#y_pred_rd = rf.predict(X_test)
+y_pred_rd = rf.predict(X_test)
 
-#print("Mean Percentual Error (RF): {}".format(mean_absolute_percentage_error(y_test, y_pred_rd)))
+print("Mean Percentual Error (RF): {}".format(mean_absolute_percentage_error(y_test, y_pred_rd)))
