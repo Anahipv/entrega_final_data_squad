@@ -82,24 +82,14 @@ amenities_rating_price = [('C',150), ('B',200), ('A',300)]
 for i in range(len(bedrooms_price)):
     train = train[(train['Bedrooms'] != bedrooms_price[i][0]) | ((train["Bedrooms"] == bedrooms_price[i][0]) & (train["Price"] <= bedrooms_price[i][1] ))]
 
-train = train[(train['Bathrooms'] != 1) | ((train["Bathrooms"] == 1) & (train["Price"] <= 140 ))]
-train = train[(train['Bathrooms'] != 1.5) | ((train["Bathrooms"] == 1.5) & (train["Price"] <= 180 ))]
-train = train[(train['Bathrooms'] != 2) | ((train["Bathrooms"] == 2) & (train["Price"] <= 270 ))]
-train = train[(train['Bathrooms'] != 2.5) | ((train["Bathrooms"] == 2.5) & (train["Price"] <= 330 ))]
-train = train[(train['Bathrooms'] != 3) | ((train["Bathrooms"] == 3) & (train["Price"] <= 450 ))]
+for i in range(len(bathrooms_price)):
+    train = train[(train['Bathrooms'] != bathrooms_price[i][0]) | ((train["Bathrooms"] == bathrooms_price[i][0]) & (train["Price"] <= bathrooms_price[i][1] ))]
 
-train = train[(train['Accommodates'] != 1) | ((train["Accommodates"] == 1) & (train["Price"] <= 60 ))]
-train = train[(train['Accommodates'] != 2) | ((train["Accommodates"] == 2) & (train["Price"] <= 100 ))]
-train = train[(train['Accommodates'] != 3) | ((train["Accommodates"] == 3) & (train["Price"] <= 120 ))]
-train = train[(train['Accommodates'] != 4) | ((train["Accommodates"] == 4) & (train["Price"] <= 140 ))]
-train = train[(train['Accommodates'] != 5) | ((train["Accommodates"] == 5) & (train["Price"] <= 180 ))]
-train = train[(train['Accommodates'] != 6) | ((train["Accommodates"] == 6) & (train["Price"] <= 210 ))]
-train = train[(train['Accommodates'] != 7) | ((train["Accommodates"] == 7) & (train["Price"] <= 270 ))]
-train = train[(train['Accommodates'] != 8) | ((train["Accommodates"] == 8) & (train["Price"] <= 300 ))]
+for i in range(len(accommodates_price)):
+    train = train[(train['Accommodates'] != accommodates_price[i][0]) | ((train["Accommodates"] == accommodates_price[i][0]) & (train["Price"] <= accommodates_price[i][1] ))]
 
-train = train[(train['Amenities Rating'] != 'C') | ((train["Amenities Rating"] == 'C') & (train["Price"] <= 150 ))]
-train = train[(train['Amenities Rating'] != 'B') | ((train["Amenities Rating"] == 'B') & (train["Price"] <= 200 ))]
-train = train[(train['Amenities Rating'] != 'A') | ((train["Amenities Rating"] == 'A') & (train["Price"] <= 300 ))]
+for i in range(len(amenities_rating_price)):
+    train = train[(train['Amenities Rating'] != amenities_rating_price[i][0]) | ((train["Amenities Rating"] == amenities_rating_price[i][0]) & (train["Price"] <= amenities_rating_price[i][1] ))]
 
 ##now that we've used the columns Amenities Rating to remove outliers, we will drop it
 ##we won't convert it using one hot encoding because Amenities Scores exists
