@@ -10,6 +10,7 @@ df_madrid = pd.read_csv("airbnb_madrid_clean.csv")
 important_amenities = ["Kitchen", "Internet", "Air conditioning", "Heating", "Washer", 
 "Dryer", "Elevator", 'Wheelchair accessible', "TV", "Pool", '24-hour check-in']
 
+print(df_madrid["Room Type"].unique())
 ##first we remove the columns that won't be used in the linear model
 df_madrid = remove_columns(["Host ID", "Host Name", "Street", "Neighbourhood Cleansed", "City", "State", "Bed Type",
 "Zipcode", "Country", "Latitude", "Longitude", "Amenities Rating", "Host Is Superhost", "Host Identity Verified",

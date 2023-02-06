@@ -16,6 +16,9 @@ columns_kept = ["ID", "Host ID", "Host Name", "Host Response Rate", "Street",
 "Beds", "Bed Type", "Amenities", "Price", "Security Deposit", "Cleaning Fee", "Guests Included",
 "Number of Reviews", "Review Scores Rating", "Cancellation Policy", "Features"]
 
+
+
+
 df_less_columns = df.filter(columns_kept, axis=1)
 
 df_with_city = df_less_columns[df_less_columns.City.notnull()]
