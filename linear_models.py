@@ -36,7 +36,7 @@ train, test = train_test_split(df_madrid, test_size=0.2, random_state=40)
 
 
 ##now we will deal with missing values and outliers in the train set
-##remove row with nan values in beds, bathroms and bedrooms
+##first we remove the rows with nan values in beds, bathroms, bedrooms and price
 train = train.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price"])
 
 #print('CORRELACION ORIGINAL')
@@ -106,12 +106,28 @@ total = train.isnull().sum().sort_values(ascending=False)
 percent = (train.isnull().sum()/train.isnull().count()).sort_values(ascending=False)
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 
+
+#now we deal with the nans in the test (if we have the time, make it into a pipeline)
+##first we remove the rows with nan values in beds, bathroms, bedrooms and price
+test = test.dropna(subset=["Beds", "Bathrooms", "Bedrooms", "Price"])
+
+##we need to deal with nan values in security deposit and cleaning fee
+##we will use the median from train considering the number of rooms
+for index in range(len(test)):
+    if np.isnan(test["Security Deposit"].iat[index]):
+        number_rooms = test["Bedrooms"].iat[index]
+        median_sd = dict_sd[number_rooms]
+        test["Security Deposit"].iat[index] = median_sd
+    if np.isnan(test["Cleaning Fee"].iat[index]):
+        number_rooms = test["Bedrooms"].iat[index]
+        median_cf = dict_cf[number_rooms]
+        test["Cleaning Fee"].iat[index] = median_cf
+
+
 y_train = train["Price"]
 X_train = train.drop("Price", axis=1)
 y_test = test["Price"]
 X_test = test.drop("Price", axis = 1)
-
-#now we deal with the nans in the test (if we have the time, make it into a pipeline)
 
 
 ##this should work after removing Nans
