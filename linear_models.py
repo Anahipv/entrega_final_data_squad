@@ -64,11 +64,10 @@ train = train[train['Guests Included'] <= 6]
 bedrooms_price = [(0,110), (1,125), (2,200), (3,280), (4,390), (5,500)]
 bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
 accommodates_price = [(1,60), (2,100), (3,120), (4,140), (5,180), (6,210), (7,270), (8,300)]
-amenities_rating_price = [('C',150), ('B',200), ('A',300)]
 guests_included_price = [(1, 125), (2, 135), (3, 150), (4,220), (5,230), (6,300)]
 
 dict_columns = {'Bedrooms' : bedrooms_price, 'Bathrooms': bathrooms_price, 'Accommodates': accommodates_price, 
-'Amenities Rating': amenities_rating_price, 'Guests Included': guests_included_price}
+'Guests Included': guests_included_price}
 
 for column_name in dict_columns.keys():
     list_prices = dict_columns[column_name]
