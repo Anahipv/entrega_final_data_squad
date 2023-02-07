@@ -67,7 +67,12 @@ important_amenities.remove('Wireless')
 #cleaning column 'Zipcode' 
 df_madrid.loc[(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-'), 'Zipcode'] = ''
 
-corr = df_madrid.corr()
+df_madrid_copy  = df_madrid[['Price', 'Accommodates', 'Bathrooms', 'Bedrooms', 'Beds', 'Cleaning Fee', 'Security Deposit',
+                            'Kitchen', 'Internet', 'Air conditioning', 'Heating', 'Washer', 'Dryer', 'Elevator', 'Wheelchair accessible', 
+                            'TV', 'Pool', '24-hour check-in']]
+
+corr = df_madrid_copy.corr(numeric_only=False)
+
 dict_weights = {}
 for amenity in important_amenities:
     weight = corr['Price'][amenity]

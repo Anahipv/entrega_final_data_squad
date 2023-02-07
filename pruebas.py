@@ -1,9 +1,6 @@
 def create_and_populate_columns(list_column, column_reference, df):
     for item in list_column:
-        df[item] = None
-        booleans = list(df[column_reference].str.contains(item, case=False))
-        for i in range(len(df)):
-            df[item].iat[i] = booleans[i]
+        df[item] = list(df[column_reference].str.contains(item, case=False))
     return df
 
 def create_column(df, column):
