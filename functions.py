@@ -26,6 +26,7 @@ def change_nan_to_median(df, column_reference, column_change, index, median_dict
         median = median_dict[key]
         df[column_change].iat[index] = median
 
+
 def create_median_dict(df, column_reference, column_median, list_keys):
     '''
     Creates a dicctionary where keys exists in the column_reference like a value, and the value is a median.
