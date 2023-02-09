@@ -69,6 +69,7 @@ df_madrid.loc[(df_madrid['Zipcode'].isnull()) | (df_madrid['Zipcode'] == '-'), '
 
 corr = df_madrid.corr()
 dict_weights = {}
+print(corr["Price"])
 for amenity in important_amenities:
     weight = corr['Price'][amenity]
     dict_weights[amenity] = weight

@@ -4,12 +4,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-import numpy as np
+from sklearn.preprocessing import RobustScaler, OneHotEncoder
 
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
 ##first we remove the columns that won't be used in the linear model
-df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type',
+df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type', "Amenities Rating",
 'Country', 'Latitude', 'Longitude', 'ID', 'Number of Reviews', 'Host Identity Verified', 'Neighbourhood Group Cleansed'], df_madrid)
 
 important_amenities = ['Kitchen', 'Internet', 'Air conditioning', 'Heating', 'Washer', 
@@ -60,6 +60,7 @@ train = train[(train['Bathrooms'] >= 1) & (train['Bathrooms'] <= 3)]
 train = train[train['Accommodates'] <= 8]
 train = train[train['Guests Included'] <= 6]
 
+
 ##We obtained these values in the lists from the file graphs.py, analyzing the data with a boxplot
 bedrooms_price = [(0,110), (1,125), (2,200), (3,280), (4,390), (5,500)]
 bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
@@ -73,12 +74,6 @@ for column_name in dict_columns.keys():
     list_prices = dict_columns[column_name]
     for i in range(len(list_prices)):
         train = train[(train[column_name] != list_prices[i][0]) | ((train[column_name] == list_prices[i][0]) & (train['Price'] <= list_prices[i][1] ))]
-
-
-##now that we've used the columns Amenities Rating to remove outliers, we will drop it
-##we won't convert it using one hot encoding because Amenities Scores exists
-train.drop('Amenities Rating', axis=1, inplace= True)
-test.drop('Amenities Rating', axis=1, inplace= True)
 
 
 total = train.isnull().sum().sort_values(ascending=False)
@@ -126,3 +121,4 @@ rf.fit(X_train, y_train)
 y_pred_rd = rf.predict(X_test)
 
 print('Mean Percentual Error (RF): {}'.format(mean_absolute_percentage_error(y_test, y_pred_rd)))
+

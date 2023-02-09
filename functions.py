@@ -26,3 +26,4 @@ def create_median_dict(df, column_reference, column_median, list_keys):
         median = df_filtered[column_median].median()
         mydict[key] = median
     return mydict
+
