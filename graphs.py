@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-# from data_cleaning import important_amenities  
-##CARO: si importamos algo de data_cleaning no scorre todo el archivo, si no es necesario lo evitaria
 import pandas as pd
 import numpy as np
+from matplotlib import style
+import matplotlib.ticker as ticker
+from functions import remove_columns
 
 ###aca por eso deje mejor leer el csv que importar el data frame
 df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
@@ -104,3 +105,104 @@ df_madrid = pd.read_csv("airbnb_madrid_clean.csv", sep=",")
 # sns.scatterplot(x='Amenities Score', y="Price", data=df_madrid)
 # plt.xticks(rotation=90, fontsize=10)
 # plt.show()
+
+
+df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type',
+'Country', 'Latitude', 'Longitude', 'ID', 'Number of Reviews', 'Host Identity Verified', 'Neighbourhood Group Cleansed'], df_madrid)
+df_madrid.drop(df_madrid.columns[0], axis=1, inplace= True)
+
+# Gráfico de distribución para cada variable numérica
+# ==============================================================================
+# Ajustar número de subplots en función del número de columnas
+# fig, axes = plt.subplots(nrows=4, ncols=3, figsize=(15, 10))
+# axes = axes.flat
+# columnas_numeric = df_madrid.select_dtypes(include=['float64', 'int']).columns
+# columnas_numeric = columnas_numeric.drop('Price')
+
+# for i, colum in enumerate(columnas_numeric):
+#     sns.regplot(
+#         x           = df_madrid[colum],
+#         y           = df_madrid['Price'],
+#         color       = "gray",
+#         marker      = '.',
+#         scatter_kws = {"alpha":0.4},
+#         line_kws    = {"color":"r","alpha":0.7},
+#         ax          = axes[i]
+#     )
+#     axes[i].set_title(f"precio vs {colum}", fontsize = 7, fontweight = "bold")
+#     axes[i].yaxis.set_major_formatter(ticker.EngFormatter())
+#     axes[i].xaxis.set_major_formatter(ticker.EngFormatter())
+#     axes[i].tick_params(labelsize = 6)
+#     axes[i].set_xlabel("")
+#     axes[i].set_ylabel("")
+
+# # Se eliminan los axes vacíos
+# for i in [11]:
+#     fig.delaxes(axes[i])
+    
+# fig.tight_layout()
+# plt.subplots_adjust(top=0.9)
+# fig.suptitle('Correlación con precio', fontsize = 10, fontweight = "bold")
+
+
+
+# Heatmap matriz de correlaciones
+# ==============================================================================
+# fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(4, 4))
+
+# corr_matrix = df_madrid.select_dtypes(include=['float64', 'int']).corr(method='pearson')
+
+# sns.heatmap(
+#     corr_matrix,
+#     annot     = True,
+#     cbar      = False,
+#     annot_kws = {"size": 6},
+#     vmin      = -1,
+#     vmax      = 1,
+#     center    = 0,
+#     cmap      = sns.diverging_palette(20, 220, n=200),
+#     square    = True,
+#     ax        = ax
+# )
+# ax.set_xticklabels(
+#     ax.get_xticklabels(),
+#     rotation = 45,
+#     horizontalalignment = 'right',
+# )
+
+# ax.tick_params(labelsize = 8)
+
+
+
+# Gráfico relación entre el precio y cada cada variables cualitativas
+# ==============================================================================
+# Ajustar número de subplots en función del número de columnas
+fig, axes = plt.subplots(nrows=4, ncols=4, figsize=(9, 5))
+axes = axes.flat
+columnas_object = df_madrid.select_dtypes(include=['object']).columns
+
+for i, colum in enumerate(columnas_object):
+    sns.violinplot(
+        x     = colum,
+        y     = 'Price',
+        data  = df_madrid,
+        color = "white",
+        ax    = axes[i]
+    )
+    axes[i].set_title(f"precio vs {colum}", fontsize = 7, fontweight = "bold")
+    axes[i].yaxis.set_major_formatter(ticker.EngFormatter())
+    axes[i].tick_params(labelsize = 6)
+    axes[i].set_xlabel("")
+    axes[i].set_ylabel("")
+
+# Se eliminan los axes vacíos
+for i in [15]:
+    fig.delaxes(axes[i])
+    
+fig.tight_layout()
+plt.subplots_adjust(top=0.9)
+fig.suptitle('Distribución del precio por grupo', fontsize = 10, fontweight = "bold");
+
+
+
+plt.show()
