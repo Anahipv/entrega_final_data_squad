@@ -1,6 +1,6 @@
-from sklearn.base import TransformerMixin
+from sklearn.base import TransformerMixin, BaseEstimator
 import pandas as pd
-from functions import remove_columns, change_nan_to_median
+from functions import remove_columns, change_nan_to_median, create_median_dict
 from sklearn.preprocessing import OneHotEncoder
 
 class DropNans(TransformerMixin):
@@ -23,64 +23,19 @@ class DropNans(TransformerMixin):
         Xdrop = datadrop.drop('Price', axis = 1)
         return Xdrop, Ydrop
 
-class DropAmenities(TransformerMixin):
+
+class ImputeMedian(BaseEstimator, TransformerMixin):
     def __init__(self):
         super().__init__()
 
     def fit(self, X, y=None):
         self.X = X
-        return self
-
-    def transform(self, X, y=None):
-        # drop incomplete rows
-        Xp = pd.DataFrame(X)
-        Xdrop = Xp.drop('Amenities Rating', axis=1, inplace= True).to_numpy()
-        return Xdrop
-
-class RemoveColumns(TransformerMixin):
-    def __init__(self):
-        super().__init__()
-
-    def fit(self, X, y=None):
-        self.X = X
-        return self
-
-    def transform(self, X, y=None):
-        #remove the selected columns
-        columns_list = ['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type', "Amenities Rating",
-'Country', 'Latitude', 'Longitude', 'ID', 'Number of Reviews', 'Host Identity Verified', 'Neighbourhood Group Cleansed']
-        Xp = pd.DataFrame(X)
-        Xdrop = remove_columns(columns_list, Xp).to_numpy()
-        return Xdrop
-
-class HostNumerical(TransformerMixin):
-    def __init__(self):
-        super().__init__()
-
-    def fit(self, X, y=None):
-        self.X = X
-        return self
-
-    def transform(self, X, y=None):
-        Xp = pd.DataFrame(X)
-        for index in range(len(Xp)):
-            if Xp['Host Is Superhost'].iat[index]:
-                Xp['Host Is Superhost'].iat[index] = 1
-            else:
-                Xp['Host Is Superhost'].iat[index] = 0
-        Xmod = Xp.to_numpy()
-        return Xmod
-
-
-class ImputeMedian(TransformerMixin):
-    def __init__(self):
-        super().__init__()
-
-    def fit(self, X, y=None):
-        self.X = X
+        number_of_rooms = X['Bedrooms'].unique()
+        self.dict_sd = create_median_dict(X, 'Bedrooms', 'Security Deposit', number_of_rooms)
+        self.dict_cf = create_median_dict(X, 'Bedrooms', 'Cleaning Fee', number_of_rooms)
         return self
 
     def transform(self, X, y=None):
         for index in range(len(X)):
-            change_nan_to_median(X, 'Bedrooms', 'Security Deposit', index, dict_sd)
-            change_nan_to_median(X, 'Bedrooms', 'Cleaning Fee', index, dict_cf)
+            change_nan_to_median(X, 'Bedrooms', 'Security Deposit', index, self.dict_sd)
+            change_nan_to_median(X, 'Bedrooms', 'Cleaning Fee', index, self.dict_cf)

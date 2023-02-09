@@ -1,12 +1,14 @@
 import pandas as pd
 from functions import remove_columns, change_nan_to_median, create_median_dict
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer, make_column_selector
 import numpy as np
+from transformers import ImputeMedian
+from sklearn.pipeline import Pipeline
 
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
@@ -68,38 +70,71 @@ print(f'"Partición de test"\n-----------------------\n{y_test.describe()}')
 numeric_columns = X_train.select_dtypes(include=['float64', 'int']).columns.to_list()
 print('numeric columns')
 print(numeric_columns)
+print(type(numeric_columns))
 cat_columns = X_train.select_dtypes(include=['object', 'category']).columns.to_list()
 print('cat columns')
 print(cat_columns)
+median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
-precessor = ColumnTransformer(
-    [('scale', StandardScaler(), numeric_columns),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'), cat_columns)],
-    remainder='passthrough'
-    )
 
-print(precessor)
+numeric_transformer = Pipeline(
+                        steps=[
+                            ('imputer', ImputeMedian()),
+                            ('scaler', StandardScaler())
+                        ]
+                        )
 
-X_train_prep = precessor.fit_transform(X_train)
-X_test_prep = precessor.transform(X_test)
-print('x train prep')
-print(X_train_prep)
-print('x test prep')
-print(X_test_prep)
+categorical_transformer = Pipeline(
+                        steps= [
+                            ('onehot', OneHotEncoder(handle_unknown='ignore'))
+                        ]
+                        )
 
-encode_cat = precessor.named_transformers_['onehot'].get_feature_names_out(cat_columns)
-print('encode cat')
-print(encode_cat)
-labels = np.concatenate([numeric_columns, encode_cat])
-print('labels')
-print(labels)
-datos_train_prep = precessor.transform(X_train)
-print('datos train prep')
-print(datos_train_prep)
-datos_train_prep = pd.DataFrame.sparse.from_spmatrix(datos_train_prep, columns= labels)
-print('datos train prep despues de dataframe')
-print(datos_train_prep)
-print(datos_train_prep.info())
+preprocessor = ColumnTransformer(
+                transformers= [
+                    ('numeric', numeric_transformer, numeric_columns),
+                    ('cat', categorical_transformer, cat_columns)
+                ],
+                remainder='passthrough'
+                )
+
+pipe = Pipeline([('preprocessing', preprocessor),
+                ('modelo', LinearRegression())])
+print('llegue hasta aca')
+pipe.fit(X=X_train, y=y_train)
+
+print('hice fit')
+#precessor = ColumnTransformer(
+#    [('medians', ImputeMedian(), median_columns),
+#    ('scale', StandardScaler(), numeric_columns),
+#    ('onehot', OneHotEncoder(handle_unknown='ignore'), cat_columns)],
+#    remainder='passthrough'
+#    )
+
+#print(precessor)
+
+#X_train_prep = precessor.fit_transform(X_train)
+#X_test_prep = precessor.transform(X_test)
+#print('x train prep')
+#print(X_train_prep)
+#print('x test prep')
+#print(X_test_prep)
+
+#encode_cat = precessor.named_transformers_['onehot'].get_feature_names_out(cat_columns)
+#print('encode cat')
+#print(encode_cat)
+#labels = np.concatenate([numeric_columns, encode_cat])
+#print('labels')
+#print(labels)
+#datos_train_prep = precessor.transform(X_train)
+#print('datos train prep')
+#print(datos_train_prep)
+#datos_train_prep = pd.DataFrame.sparse.from_spmatrix(datos_train_prep, columns= labels)
+#print('datos train prep despues de dataframe')
+#print(datos_train_prep)
+#print(datos_train_prep.info())
+
+
 #for col in cat_columns:
     #one_hot = pd.get_dummies(X_train[col])
     #X_train = X_train.drop(col, axis=1)

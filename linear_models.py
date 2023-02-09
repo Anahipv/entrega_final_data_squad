@@ -8,6 +8,7 @@ from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer, make_column_selector
 import numpy as np
 
+
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
 ##first we remove the columns that won't be used in the linear model
