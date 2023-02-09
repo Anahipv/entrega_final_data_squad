@@ -107,6 +107,8 @@ for index in range(len(df_madrid)):
         ratings.append('A')
 df_madrid['Amenities Rating'] = ratings
 
+print(df_madrid[df_madrid['Zipcode'] == '28051\n28051'])
+
 
 #convert the dataset to csv
-df_madrid.to_csv('airbnb_madrid_clean.csv')
+#df_madrid.to_csv('airbnb_madrid_clean.csv')
