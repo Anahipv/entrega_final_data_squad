@@ -40,10 +40,18 @@ class ImputeMedian(BaseEstimator, TransformerMixin):
         for bedroom in dict_list_sd.keys():
             self.dict_sd[bedroom] = median(dict_list_sd[bedroom])
             self.dict_cf[bedroom] = median(dict_list_cf[bedroom])
-        print(self.dict_cf)
         return self
 
     def transform(self, X, y=None):
-        for index in range(len(X)):
-            change_nan_to_median(X, 'Bedrooms', 'Security Deposit', index, self.dict_sd)
-            change_nan_to_median(X, 'Bedrooms', 'Cleaning Fee', index, self.dict_cf)
+        for row in X:
+            ##sd
+            if isnan(row[5]):
+                bedroom = row[3]
+                median = self.dict_sd[bedroom]
+                row[5] = median
+            ##cf
+            if isnan(row[6]):
+                bedroom = row[3]
+                median = self.dict_cf[bedroom]
+                row[6] = median
+        return X

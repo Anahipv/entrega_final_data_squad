@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler,  LabelEncoder
+from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer, make_column_selector
 import numpy as np
 from transformers import ImputeMedian, DataFrameSelector
@@ -87,8 +87,7 @@ numeric_transformer = Pipeline(
 categorical_transformer = Pipeline(
                         steps= [
                             ('selector', DataFrameSelector(cat_columns)),
-                            ('encode', LabelEncoder()),
-                            ('onehot', OneHotEncoder(handle_unknown='ignore'))
+                            ('onehot', OneHotEncoder(sparse=False))
                         ]
                         )
 
