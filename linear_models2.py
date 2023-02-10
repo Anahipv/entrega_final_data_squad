@@ -78,9 +78,9 @@ median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
 
 numeric_transformer = Pipeline(
-                        steps=[
-                            ('selector', DataFrameSelector(numeric_columns)),      
+                        steps=[      
                             ('imputer', ImputeMedian()),
+                            ('selector', DataFrameSelector(numeric_columns)), 
                             ('scaler', StandardScaler())
                         ]
                         )
