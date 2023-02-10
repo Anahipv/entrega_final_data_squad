@@ -74,7 +74,6 @@ print(type(numeric_columns))
 cat_columns = X_train.select_dtypes(include=['object', 'category']).columns.to_list()
 print('cat columns')
 print(cat_columns)
-median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
 ##try robubst scaler later
 numeric_transformer = Pipeline(
