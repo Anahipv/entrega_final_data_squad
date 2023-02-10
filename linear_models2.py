@@ -87,7 +87,7 @@ numeric_transformer = Pipeline(
 categorical_transformer = Pipeline(
                         steps= [
                             ('selector', DataFrameSelector(cat_columns)),
-                            ('onehot', OneHotEncoder(sparse=False))
+                            ('onehot', OneHotEncoder(sparse=False, handle_unknown='ignore'))
                         ]
                         )
 
@@ -98,15 +98,16 @@ preprocessor =  FeatureUnion(
                 ]
                 )
 
-train_prepared = preprocessor.fit_transform(X_train, y_train)
-print(train_prepared.shape)
+X_train_prepared = preprocessor.fit_transform(X_train)
+#print(X_train_prepared)
 
+X_test_prepared = preprocessor.transform(X_test)
 ##try ridge later
-pipe = Pipeline([('preprocessing', preprocessor),
-                ('modelo', LinearRegression())])
+#pipe = Pipeline([('preprocessing', preprocessor),
+                #('modelo', LinearRegression())])
 
 print('llegue hasta aca')
-pipe.fit(X=X_train, y=y_train)
+#pipe.fit(X=X_train, y=y_train)
 
 print('hice fit')
 #precessor = ColumnTransformer(
@@ -155,8 +156,8 @@ print('hice fit')
 #onehot.fit_transform(X_train.reshape)
 
 
-print(len(X_train))
-print(len(y_train))
+#print(len(X_train))
+#print(len(y_train))
 
 #for col in cat_columns:
 #    one_hot = pd.get_dummies(df_madrid[col])
@@ -206,11 +207,11 @@ print(len(y_train))
 
 
 
-total = X_train.isnull().sum().sort_values(ascending=False)
-percent = (X_train.isnull().sum()/train.isnull().count()).sort_values(ascending=False)
-missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
-print('missing data')
-print(missing_data)
+#total = X_train.isnull().sum().sort_values(ascending=False)
+#percent = (X_train.isnull().sum()/train.isnull().count()).sort_values(ascending=False)
+#missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+#print('missing data')
+#print(missing_data)
 
 
 # #now we deal with the nans in the test (if we have the time, make it into a pipeline)
@@ -229,18 +230,18 @@ test = test.dropna(subset=['Beds', 'Bathrooms', 'Bedrooms', 'Price', 'Review Sco
 #y_test = test['Price']
 #X_test = test.drop('Price', axis = 1)
 
-print(X_train.isna().sum().sort_values())
+#print(X_train.isna().sum().sort_values())
 
-print(len(X_train))
-print(len(y_train))
+#print(len(X_train))
+#print(len(y_train))
 
 # ##this should work after removing Nans
 lr = LinearRegression()
-lr.fit(X_train, y_train)
+lr.fit(X_train_prepared, y_train)
 
 
 # ##making predictions
-y_pred = lr.predict(X_test)
+y_pred = lr.predict(X_test_prepared)
 
 _preds_df = pd.DataFrame(dict(observed=y_test, predicted=y_pred))
 _preds_df.head()
@@ -252,8 +253,8 @@ print('Mean Percentual Error: {}'.format(mean_absolute_percentage_error(y_test, 
 
 # ##random forest for comparison
 rf = RandomForestRegressor()
-rf.fit(X_train, y_train)
+rf.fit(X_train_prepared, y_train)
 
-y_pred_rd = rf.predict(X_test)
+y_pred_rd = rf.predict(X_test_prepared)
 
 print('Mean Percentual Error (RF): {}'.format(mean_absolute_percentage_error(y_test, y_pred_rd)))
