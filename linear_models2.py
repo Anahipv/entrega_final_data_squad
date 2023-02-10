@@ -236,7 +236,7 @@ test = test.dropna(subset=['Beds', 'Bathrooms', 'Bedrooms', 'Price', 'Review Sco
 #print(len(y_train))
 
 # ##this should work after removing Nans
-lr = LinearRegression()
+lr = Ridge()
 lr.fit(X_train_prepared, y_train)
 
 
