@@ -1,8 +1,15 @@
 from sklearn.base import TransformerMixin, BaseEstimator
 import pandas as pd
 from functions import remove_columns, change_nan_to_median, create_median_dict
-from sklearn.preprocessing import OneHotEncoder
 
+
+class DataFrameSelector(BaseEstimator, TransformerMixin):
+    def __init__(self, attribute_names):
+        self.attribute_names = attribute_names
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        return X[self.attribute_names].values
 
 class ImputeMedian(BaseEstimator, TransformerMixin):
     def __init__(self):

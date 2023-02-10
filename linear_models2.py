@@ -4,10 +4,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler
+from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler,  LabelEncoder
 from sklearn.compose import ColumnTransformer, make_column_selector
 import numpy as np
-from transformers import ImputeMedian
+from transformers import ImputeMedian, DataFrameSelector
 from sklearn.pipeline import Pipeline
 
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
@@ -78,7 +78,8 @@ median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
 
 numeric_transformer = Pipeline(
-                        steps=[
+                        steps=[                            
+                            ('selector', DataFrameSelector(numeric_columns))
                             ('imputer', ImputeMedian()),
                             ('scaler', StandardScaler())
                         ]
@@ -86,14 +87,15 @@ numeric_transformer = Pipeline(
 
 categorical_transformer = Pipeline(
                         steps= [
+                            ('selector', DataFrameSelector(cat_columns))
                             ('onehot', OneHotEncoder(handle_unknown='ignore'))
                         ]
                         )
 
 preprocessor = ColumnTransformer(
                 transformers= [
-                    ('numeric', numeric_transformer, numeric_columns),
-                    ('cat', categorical_transformer, cat_columns)
+                    ('numeric', numeric_transformer),
+                    ('cat', categorical_transformer)
                 ],
                 remainder='passthrough'
                 )
