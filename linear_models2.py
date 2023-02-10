@@ -76,11 +76,11 @@ print('cat columns')
 print(cat_columns)
 median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
-
+##try robubst scaler later
 numeric_transformer = Pipeline(
-                        steps=[      
-                            ('imputer', ImputeMedian()),
-                            ('selector', DataFrameSelector(numeric_columns)), 
+                        steps=[
+                            ('selector', DataFrameSelector(numeric_columns)),      
+                            ('imputer', ImputeMedian()), 
                             ('scaler', StandardScaler())
                         ]
                         )
@@ -102,6 +102,8 @@ preprocessor =  FeatureUnion(
 
 train_prepared = preprocessor.fit_transform(X_train, y_train)
 print(train_prepared.shape)
+
+##try ridge later
 pipe = Pipeline([('preprocessing', preprocessor),
                 ('modelo', LinearRegression())])
 
@@ -174,35 +176,35 @@ print(len(y_train))
 
 # ##we need to deal with nan values in security deposit and cleaning fee
 # ##we will use the median considering the number of rooms
-number_of_rooms = train['Bedrooms'].unique()
+#number_of_rooms = train['Bedrooms'].unique()
 
-dict_sd = create_median_dict(X_train, 'Bedrooms', 'Security Deposit', number_of_rooms)
-dict_cf = create_median_dict(X_train, 'Bedrooms', 'Cleaning Fee', number_of_rooms)
+#dict_sd = create_median_dict(X_train, 'Bedrooms', 'Security Deposit', number_of_rooms)
+#dict_cf = create_median_dict(X_train, 'Bedrooms', 'Cleaning Fee', number_of_rooms)
 
-for index in range(len(X_train)):
-    change_nan_to_median(X_train, 'Bedrooms', 'Security Deposit', index, dict_sd)
-    change_nan_to_median(X_train, 'Bedrooms', 'Cleaning Fee', index, dict_cf)
+#for index in range(len(X_train)):
+    #change_nan_to_median(X_train, 'Bedrooms', 'Security Deposit', index, dict_sd)
+    #change_nan_to_median(X_train, 'Bedrooms', 'Cleaning Fee', index, dict_cf)
 
 
 # ##cleaning outliers
-X_train = X_train[X_train['Bedrooms'] <= 5]
-X_train = X_train[(X_train['Bathrooms'] >= 1) & (X_train['Bathrooms'] <= 3)]
-X_train = X_train[X_train['Accommodates'] <= 8]
-X_train = X_train[X_train['Guests Included'] <= 6]
+#X_train = X_train[X_train['Bedrooms'] <= 5]
+#X_train = X_train[(X_train['Bathrooms'] >= 1) & (X_train['Bathrooms'] <= 3)]
+#X_train = X_train[X_train['Accommodates'] <= 8]
+#X_train = X_train[X_train['Guests Included'] <= 6]
 
 # ##We obtained these values in the lists from the file graphs.py, analyzing the data with a boxplot
-bedrooms_price = [(0,110), (1,125), (2,200), (3,280), (4,390), (5,500)]
-bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
-accommodates_price = [(1,60), (2,100), (3,120), (4,140), (5,180), (6,210), (7,270), (8,300)]
-guests_included_price = [(1, 125), (2, 135), (3, 150), (4,220), (5,230), (6,300)]
+#bedrooms_price = [(0,110), (1,125), (2,200), (3,280), (4,390), (5,500)]
+#bathrooms_price = [(1,140), (1.5,180), (2,270), (2.5,330), (3,450)]
+#accommodates_price = [(1,60), (2,100), (3,120), (4,140), (5,180), (6,210), (7,270), (8,300)]
+#guests_included_price = [(1, 125), (2, 135), (3, 150), (4,220), (5,230), (6,300)]
 
-dict_columns = {'Bedrooms' : bedrooms_price, 'Bathrooms': bathrooms_price, 'Accommodates': accommodates_price, 
-'Guests Included': guests_included_price}
+#dict_columns = {'Bedrooms' : bedrooms_price, 'Bathrooms': bathrooms_price, 'Accommodates': accommodates_price, 
+#'Guests Included': guests_included_price}
 
-for column_name in dict_columns.keys():
-    list_prices = dict_columns[column_name]
-    for i in range(len(list_prices)):
-        X_train = X_train[(X_train[column_name] != list_prices[i][0]) | ((X_train[column_name] == list_prices[i][0]) & (y_train <= list_prices[i][1] ))]
+#for column_name in dict_columns.keys():
+    #list_prices = dict_columns[column_name]
+    #for i in range(len(list_prices)):
+        #X_train = X_train[(X_train[column_name] != list_prices[i][0]) | ((X_train[column_name] == list_prices[i][0]) & (y_train <= list_prices[i][1] ))]
 
 
 
@@ -219,9 +221,9 @@ test = test.dropna(subset=['Beds', 'Bathrooms', 'Bedrooms', 'Price', 'Review Sco
 
 # ##we need to deal with nan values in security deposit and cleaning fee
 # ##we will use the median from train considering the number of rooms
-for index in range(len(X_test)):
-    change_nan_to_median(X_test, 'Bedrooms', 'Security Deposit', index, dict_sd)
-    change_nan_to_median(X_test, 'Bedrooms', 'Cleaning Fee', index, dict_cf)
+#for index in range(len(X_test)):
+    #change_nan_to_median(X_test, 'Bedrooms', 'Security Deposit', index, dict_sd)
+    #change_nan_to_median(X_test, 'Bedrooms', 'Cleaning Fee', index, dict_cf)
 
 
 #y_train = train['Price']
