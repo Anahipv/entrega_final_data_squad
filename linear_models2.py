@@ -80,7 +80,7 @@ numeric_transformer = Pipeline(
                         steps=[
                             ('selector', DataFrameSelector(numeric_columns)),      
                             ('imputer', ImputeMedian()), 
-                            ('scaler', StandardScaler())
+                            ('scaler', RobustScaler())
                         ]
                         )
 
