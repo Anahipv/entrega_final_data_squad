@@ -8,7 +8,7 @@ from sklearn.preprocessing import RobustScaler, OneHotEncoder, StandardScaler,  
 from sklearn.compose import ColumnTransformer, make_column_selector
 import numpy as np
 from transformers import ImputeMedian, DataFrameSelector
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline, FeatureUnion
 
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
@@ -78,8 +78,8 @@ median_columns = ['Bedrooms','Cleaning Fee', 'Security Deposit']
 
 
 numeric_transformer = Pipeline(
-                        steps=[                            
-                            ('selector', DataFrameSelector(numeric_columns))
+                        steps=[
+                            ('selector', DataFrameSelector(numeric_columns)),      
                             ('imputer', ImputeMedian()),
                             ('scaler', StandardScaler())
                         ]
@@ -87,21 +87,24 @@ numeric_transformer = Pipeline(
 
 categorical_transformer = Pipeline(
                         steps= [
-                            ('selector', DataFrameSelector(cat_columns))
+                            ('selector', DataFrameSelector(cat_columns)),
+                            ('encode', LabelEncoder()),
                             ('onehot', OneHotEncoder(handle_unknown='ignore'))
                         ]
                         )
 
-preprocessor = ColumnTransformer(
-                transformers= [
+preprocessor =  FeatureUnion(
+                transformer_list = [
                     ('numeric', numeric_transformer),
                     ('cat', categorical_transformer)
-                ],
-                remainder='passthrough'
+                ]
                 )
 
+train_prepared = preprocessor.fit_transform(X_train, y_train)
+print(train_prepared.shape)
 pipe = Pipeline([('preprocessing', preprocessor),
                 ('modelo', LinearRegression())])
+
 print('llegue hasta aca')
 pipe.fit(X=X_train, y=y_train)
 
