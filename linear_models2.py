@@ -1,10 +1,10 @@
 import pandas as pd
 from functions import remove_columns
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import RidgeCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-from sklearn.preprocessing import RobustScaler, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from transformers import DataFrameSelector
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.impute import SimpleImputer
@@ -74,7 +74,7 @@ numeric_transformer = Pipeline(
                         steps=[
                             ('selector', DataFrameSelector(numeric_columns)),      
                             ('imputer', SimpleImputer(strategy="median")),
-                            ('scaler', RobustScaler())
+                            ('scaler', StandardScaler())
                         ]
                         )
                         
@@ -98,7 +98,7 @@ X_train_prepared = preprocessor.fit_transform(X_train)
 X_test_prepared = preprocessor.transform(X_test)
 
 
-lr = Ridge()
+lr = RidgeCV(alphas=(0.1, 1.0, 6.6, 10.0))
 lr.fit(X_train_prepared, y_train)
 
 
