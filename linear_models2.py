@@ -12,21 +12,12 @@ from sklearn.impute import SimpleImputer
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
 ##first we remove the columns that won't be used in the linear model
-df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type', "Amenities Rating",
+df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type', "Amenities Rating", "Amenities Score",
 'Country', 'Latitude', 'Longitude', 'ID', 'Number of Reviews', 'Host Identity Verified', 'Neighbourhood Group Cleansed'], df_madrid)
 
-important_amenities = ['Kitchen', 'Internet', 'Air conditioning', 'Heating', 'Washer', 
-'Dryer', 'Elevator', 'Wheelchair accessible', 'TV', 'Pool', '24-hour check-in']
 
-df_madrid = remove_columns(important_amenities, df_madrid)
 df_madrid.drop(df_madrid.columns[0], axis=1, inplace= True)
 
-##transforming to string in order to use it as a categorical column
-for index in range(len(df_madrid)):
-    if df_madrid['Host Is Superhost'].iat[index]:
-        df_madrid['Host Is Superhost'].iat[index] = 'Yes'
-    else:
-        df_madrid['Host Is Superhost'].iat[index] = 'No'
 
 ##now we divide in train and test
 train, test = train_test_split(df_madrid, test_size=0.2, random_state=40)
