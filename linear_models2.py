@@ -12,7 +12,7 @@ from sklearn.impute import SimpleImputer
 df_madrid = pd.read_csv('airbnb_madrid_clean.csv')
 
 ##first we remove the columns that won't be used in the linear model
-df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Neighbourhood Cleansed', 'City', 'State', 'Bed Type', "Amenities Rating", "Amenities Score",
+df_madrid = remove_columns(['Host ID', 'Host Name', 'Street', 'Zipcode', 'City', 'State', 'Bed Type', "Amenities Rating", "Amenities Score",
 'Country', 'Latitude', 'Longitude', 'ID', 'Number of Reviews', 'Host Identity Verified', 'Neighbourhood Group Cleansed'], df_madrid)
 
 
@@ -51,9 +51,9 @@ X_train = train.drop('Price', axis=1)
 y_test = test['Price']
 X_test = test.drop('Price', axis = 1)
 
-print(f'"Partición de entrenamento"\n-----------------------\n{y_train.describe()}')
+print(f'"Train describe"\n-----------------------\n{y_train.describe()}')
 
-print(f'"Partición de test"\n-----------------------\n{y_test.describe()}')
+print(f'"Test describe"\n-----------------------\n{y_test.describe()}')
 
 
 ##now we divide the column in numerical and categorica
