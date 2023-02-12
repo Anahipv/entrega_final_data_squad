@@ -34,7 +34,7 @@ def create_median_dict(df, column_reference, column_median, list_keys):
     Creates a dicctionary where keys exists in the column_reference like a value, and the value is a median.
     For each key in the list_keys:
         first filteres the dataframe where the column_reference is equal to the key,
-        then calculates the median for de dataframe filtered and creates the dicctionary woth the key and the median
+        then calculates the median for de dataframe filtered and creates the dicctionary with the key and the median
     '''
     mydict = {}
     for key in list_keys:
