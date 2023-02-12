@@ -1,6 +1,5 @@
 import pandas as pd
 from functions import create_and_populate_columns, remove_columns
-from functools import reduce
 
 df = pd.read_csv('airbnb-listings.csv', sep=';')
 rows, columns = df.shape
