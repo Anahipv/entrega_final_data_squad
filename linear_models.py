@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import RidgeCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder
 from transformers import DataFrameSelector
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.impute import SimpleImputer
@@ -64,8 +64,7 @@ cat_columns = X_train.select_dtypes(include=['object', 'category']).columns.to_l
 numeric_transformer = Pipeline(
                         steps=[
                             ('selector', DataFrameSelector(numeric_columns)),      
-                            ('imputer', SimpleImputer(strategy="median")),
-                            ('scaler', StandardScaler())
+                            ('imputer', SimpleImputer(strategy="median"))
                         ]
                         )
                         
