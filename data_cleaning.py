@@ -24,6 +24,11 @@ df_with_city = df_less_columns[df_less_columns.City.notnull()]
 #remove airbnbs not in Madrid
 df_madrid = df_with_city[df_with_city['City'].str.contains('Mad', case=False)]
 
+##change all cities to "Madrid"
+df_madrid["City"] = "Madrid"
+
+##and all the states to "Community of Madrid"
+df_madrid["State"] == "Community of Madrid"
 
 amenities = set()
 list_amenities = list(df_madrid['Amenities'])
@@ -73,7 +78,7 @@ df_madrid_copy  = df_madrid[['Price', 'Accommodates', 'Bathrooms', 'Bedrooms', '
 
 
 ##we will create a new 'Amenities Score' column. The data will be obtained by adding the weight in the correlation for each amenity in the row
-corr = df_madrid_copy.corr(numeric_only=False)
+#corr = df_madrid_copy.corr(numeric_only=False)
 
 dict_weights = {}
 print(corr["Price"])
