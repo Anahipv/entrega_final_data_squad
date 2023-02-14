@@ -28,7 +28,7 @@ df_madrid = df_with_city[df_with_city['City'].str.contains('Mad', case=False)]
 df_madrid["City"] = "Madrid"
 
 ##and all the states to "Community of Madrid"
-df_madrid["State"] == "Community of Madrid"
+df_madrid["State"] = "Community of Madrid"
 
 amenities = set()
 list_amenities = list(df_madrid['Amenities'])
