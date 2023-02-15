@@ -25,4 +25,4 @@
 <a href="https://github.com/Anahipv"> Anahi Valenzuela </a><br>
 <a href="https://github.com/VicoF5"> Victoria Ferrando </a><br>
 <a href="https://github.com/JuliAbbiendi"> Julieta Abbiendi </a><br>
-<a href=""> Liseth Apollini </a>
+<a href="https://github.com/Lisethapollini"> Liseth Apollini </a>
