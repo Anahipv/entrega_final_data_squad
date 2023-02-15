@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb price</title>
+    <link rel="stylesheet" href='{% static "style.css" %}'>
+</head>
+<body>
+    <div class="all">
+    <i class='fab fa-airbnb'></i>
+    <h3 class="title">Tell us about your property:</h3>
+    <form action="{% url 'price' %}" method="POST">
+        {% csrf_token %}
+        <div class="answers">
+        <div class="answer">
+        <label>Neighbourhood:</label>
+        <select id="Neighbourhood Group Cleansed" name="Neighbourhood Group Cleansed" required>
+            <option value="Centro">Centro</option>
+            <option value="Arganzuela">Arganzuela</option>
+            <option value="Ciudad Lineal">Ciudad Lineal</option>
+            <option value="Hortaleza">Hortaleza</option>
+            <option value="Villaverde">Villaverde</option>
+            <option value="Chamberí">Chamberí</option>
+            <option value="Chamartín">Chamartín</option>
+            <option value="Tetuán">Tetuán</option>
+            <option value="Salamanca">Salamanca</option>
+            <option value="Retiro">Retiro</option>
+            <option value="Fuencarral - El Pardo">Fuencarral - El Pardo</option>
+            <option value="Moncloa - Aravaca">Moncloa - Aravaca</option>
+            <option value="Latina">Latina</option>
+            <option value="Carabanchel">Carabanchel</option>
+            <option value="Puente de Vallecas">Puente de Vallecas</option>
+            <option value="Moratalaz">Moratalaz</option>
+            <option value="Usera">Usera</option>
+            <option value="Villa de Vallecas">Villa de Vallecas</option>
+            <option value="Vicálvaro">Vicálvaro</option>
+            <option value="San Blas - Canillejas">San Blas - Canillejas</option>
+            <option value="Barajas">Barajas</option>
+        </select>
+        </div>
+        <div class="answer">
+        <label>Property Type:</label>
+        <select id="Property Type" name="Property Type" required>
+            <option value="Apartment">Apartment</option>
+            <option value="House">House</option>
+            <option value="Other">Other</option>
+        </select>
+        </div>
+        <div class="answer">
+        <label>Room Type:</label>
+        <select id="Room Type" name="Room Type" required>
+            <option value="Private room">Private room</option>
+            <option value="Entire home/apt">Entire home/apt</option>
+            <option value="Shared room">Shared room</option>
+        </select>
+        </div>
+        <div class="answer">
+        <label>Number of Bathrooms:</label>
+        <input type="number" id="Bathrooms" name="Bathrooms" required>
+        </div>
+        <div class="answer">
+            <label>Number of Bedrooms:</label>
+            <input type="number" id="Bedrooms" name="Bedrooms" required>
+        </div>
+        <div class="answer">
+        <label>Number of Beds:</label>
+        <input type="number" id="Beds" name="Beds" required>
+    </div>
+        <div class="answer">
+        <label>Number of Guests:</label>
+        <input type="number" id="Guests Included" name="Guests Included" required>
+    </div>
+        <div class="answer">
+        <label>Cancellation Policy:</label>
+        <select id="Cancellation Policy" name="Cancellation Policy" required>
+            <option value="flexible">Flexible</option>
+            <option value="moderate">Moderate</option>
+            <option value="strict">Strict</option>
+        </select>
+    </div>
+    <div class="answer">
+        <label>Are you a Superhost?</label>
+        <select id="Host Is Superhost" name="Host Is Superhost" required>
+            <option value=True>Yes</option>
+            <option value=False>No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have a kitchen?</label>
+        <select id="Kitchen" name="Kitchen" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+    <div class="answer">
+        <label>Does your property have Internet?</label>
+        <select id="Internet" name="Internet" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+    <div class="answer">
+        <label>Does your property have air conditioning?</label>
+        <select id="Air conditioning" name="Air conditioning" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have heating?</label>
+        <select id="Heating" name="Heating" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have a washer?</label>
+        <select id="Washer" name="Washer" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have a dryer?</label>
+        <select id="Dryer" name="Dryer" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have an elevator?</label>
+        <select id="Elevator" name="Elevator" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Is your property wheelchair accessible?</label>
+        <select id="Wheelchair accessible" name="Wheelchair accessible" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have a TV?</label>
+        <select id="TV" name="TV" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Does your property have a pool?</label>
+        <select id="Pool" name="Pool" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <div class="answer">
+        <label>Do you offer 24-hour check-in?</label>
+        <select id="24-hour check-in" name="24-hour check-in" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+    </div>
+        <input class= "btn" type="submit", value="Suggest Price">
+    </div>
+    </form>
+</div>
+</body>
+</html>
+
+<style>
+    body{
+     background: url("{% static 'room.jpeg'%}") no-repeat center center fixed;
+     -webkit-background-size:cover;
+     -moz--background-size:cover;
+     -o--background-size:cover;
+     background-size: cover;
+    }
+ </style>
