@@ -9,7 +9,7 @@
 <li>Statistical analysis using Python</li>
 <li>Key metrics visualization using Tableau</li>
 <li>A lineal model that predicts the rent price of a property</li>
-<li><a href="https://github.com/CGraciolli/Airbnb-Price-Simulator">An interface made with Django </a></li>
+<li>An interface made with Django </li>
 </ul>
 
 <img src="https://user-images.githubusercontent.com/112963325/219010172-55020c03-7f3e-42ae-aa24-4cd83f84d5ac.png" alt="sql">
